@@ -34,8 +34,8 @@ module.exports = NodeHelper.create({
       songTitle:    song.media_title,
       artist:       song.media_artist,
       album:        song.media_album_name,
-      titleLength:  parseInt(song.duration * 1000),
-      progress:     parseInt(song.position * 1000),
+      titleLength:  parseInt(song.duration) * 1000,
+      progress:     parseInt(song.position) * 1000,
       isPlaying:    song.state == "playing",
       deviceName:   song.friendly_name,
       isSpotify:    song.app_name == "Spotify"
