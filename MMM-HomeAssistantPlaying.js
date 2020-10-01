@@ -49,7 +49,7 @@ Module.register('MMM-HomeAssistantPlaying', {
   socketNotificationReceived: function (notification, payload) {
     console.log("HASS: Socket notification received `"+notification+"`")
     switch (notification) {
-      case 'RETRIEVED_SONG_DATA':
+      case 'UPDATE_CURRENT_SONG':
         this.initialized = true;
         this.context = payload;
         this.updateDom();
