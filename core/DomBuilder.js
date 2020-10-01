@@ -1,5 +1,5 @@
 
-class NPOS_DomBuilder {
+class DomBuilder {
 
   constructor(config, pathPrefix) {
     this.config = config;
@@ -41,8 +41,8 @@ class NPOS_DomBuilder {
 
   getNothingIsPlayingContent() {
     let content = document.createElement('div');
-    content.className = 'NPOS_nothingIsPlayingContent';
-    content.appendChild(this.getLogoImage());
+//    content.className = 'NPOS_nothingIsPlayingContent';
+//    content.appendChild(this.getLogoImage());
 
     return content;
   }
@@ -74,6 +74,7 @@ class NPOS_DomBuilder {
    *   titleLength: *num*,
    *   progress: *num*,
    *   isPlaying: *boolean*,
+   *   isSpotify: *boolean*,
    *   deviceName: *string*
    * }
    *
@@ -85,7 +86,7 @@ class NPOS_DomBuilder {
 
     if (this.config.showCoverArt) {
       content.appendChild(this.getCoverArtDiv(context.imgURL));
-    } else {
+    } else if(context.isSpotify) {
       content.appendChild(this.getIconImage('NPOS_logoImage'));
     }
 

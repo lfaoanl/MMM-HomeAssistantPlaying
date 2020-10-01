@@ -1,61 +1,39 @@
 'use strict';
 
 const NodeHelper = require('node_helper');
-const SpotifyConnector = require('./core/SpotifyConnector');
 
 
 module.exports = NodeHelper.create({
 
   start: function () {
-    this.connector = undefined;
+    this.expressApp.post('/MMM-HomeAutomationNotifications', function (req, res) {
+      this.sendSocketNotification("UPDATE_CURRENT_SONG", req.query);
+      res.status(204).end();
+    });
   },
 
 
   socketNotificationReceived: function (notification, payload) {
     switch (notification) {
-      case 'CONNECT_TO_SPOTIFY':
-        this.connector = new SpotifyConnector(payload);
-        this.retrieveCurrentSong();
-        break;
-
       case 'UPDATE_CURRENT_SONG':
-        this.retrieveCurrentSong();
+        this.sendRetrievedNotification(payload);
         break;
     }
   },
 
-
-  retrieveCurrentSong: function () {
-    this.connector.retrieveCurrentlyPlaying()
-      .then((response) => {
-        if (response) {
-          this.sendRetrievedNotification(response);
-        } else {
-          this.sendRetrievedNotification({ noSong: true });
-        }
-      })
-      .catch((error) => {
-        console.error('Can’t retrieve current song. Reason: ');
-        console.error(error);
-      });
-  },
-
-
-  sendRetrievedNotification: function (songInfo) {
+  sendRetrievedNotification: function (song) {
     let payload = songInfo;
-
-    if (!songInfo.noSong) {
-      payload = {
-        imgURL: this.getImgURL(songInfo.item.album.images),
-        songTitle: songInfo.item.name,
-        artist: this.getArtistName(songInfo.item.artists),
-        album: songInfo.item.album.name,
-        titleLength: songInfo.item.duration_ms,
-        progress: songInfo.progress_ms,
-        isPlaying: songInfo.isPlaying,
-        deviceName: songInfo.device.name
-      };
-    }
+    payload = {
+      imgURL:       song.entity_picture,
+      songTitle:    song.media_title,
+      artist:       song.media_artist,
+      album:        song.media_album_name,
+      titleLength:  song.duration * 1000,
+      progress:     song.position * 1000,
+      isPlaying:    song.state == "playing",
+      deviceName:   song.friendly_name,
+      isSpotify:    song.app_name == "Spotify"
+    };
 
     this.sendSocketNotification('RETRIEVED_SONG_DATA', payload);
   },
