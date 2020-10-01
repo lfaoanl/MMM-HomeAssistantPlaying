@@ -51,9 +51,24 @@ Module.register('MMM-HomeAssistantPlaying', {
     switch (notification) {
       case 'UPDATE_CURRENT_SONG':
         this.initialized = true;
-        this.context = payload;
+        this.context = this.parseSongData(payload);
         this.updateDom();
     }
+  },
+
+  parseSongData: function (song) {
+    let payload = {
+      imgURL:       song.entity_picture,
+      songTitle:    song.media_title,
+      artist:       song.media_artist,
+      album:        song.media_album_name,
+      titleLength:  parseFloat(song.duration) * 1000,
+      progress:     parseFloat(song.position) * 1000,
+      isPlaying:    song.state == "playing",
+      deviceName:   song.friendly_name,
+      isSpotify:    song.app_name == "Spotify"
+    };
+    return payload
   },
 //
 //  startFetchingLoop() {

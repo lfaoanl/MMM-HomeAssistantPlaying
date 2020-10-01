@@ -18,31 +18,13 @@ module.exports = NodeHelper.create({
   socketNotificationReceived: function (notification, payload) {
     console.log("HASS: Received `"+notification+"` notification")
     switch (notification) {
-      case 'UPDATE_CURRENT_SONG':
-        this.parseAndSendSongData(payload);
-        break;
       case 'CONNECT':
         this.sendSocketNotification("CONNECTED");
         break;
     }
   },
 
-  parseAndSendSongData: function (song) {
-    let payload = songInfo;
-    payload = {
-      imgURL:       song.entity_picture,
-      songTitle:    song.media_title,
-      artist:       song.media_artist,
-      album:        song.media_album_name,
-      titleLength:  parseFloat(song.duration) * 1000,
-      progress:     parseFloat(song.position) * 1000,
-      isPlaying:    song.state == "playing",
-      deviceName:   song.friendly_name,
-      isSpotify:    song.app_name == "Spotify"
-    };
 
-    this.sendSocketNotification('RETRIEVED_SONG_DATA', payload);
-  },
 
 
   getArtistName: function (artists) {
