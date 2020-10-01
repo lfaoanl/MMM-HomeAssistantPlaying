@@ -16,6 +16,7 @@ Module.register('MMM-HomeAssistantPlaying', {
   start: function () {
     Log.info('Starting module: ' + this.name );
 
+    this.sendSocketNotification("CONNECT");
     this.initialized = false;
     this.context = {};
   },

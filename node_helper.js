@@ -19,12 +19,15 @@ module.exports = NodeHelper.create({
     console.log("HASS: Received `UPDATE_CURRENT_SONG` notification")
     switch (notification) {
       case 'UPDATE_CURRENT_SONG':
-        this.sendRetrievedNotification(payload);
+        this.parseAndSendSongData(payload);
+        break;
+      case 'CONNECT':
+        this.sendSocketNotification("CONNECTED");
         break;
     }
   },
 
-  sendRetrievedNotification: function (song) {
+  parseAndSendSongData: function (song) {
     let payload = songInfo;
     payload = {
       imgURL:       song.entity_picture,
