@@ -16,7 +16,7 @@ module.exports = NodeHelper.create({
 
 
   socketNotificationReceived: function (notification, payload) {
-    console.log("HASS: Received `UPDATE_CURRENT_SONG` notification")
+    console.log("HASS: Received `"+notification+"` notification")
     switch (notification) {
       case 'UPDATE_CURRENT_SONG':
         this.parseAndSendSongData(payload);
