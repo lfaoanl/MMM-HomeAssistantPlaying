@@ -41,7 +41,7 @@ Module.register('MMM-HomeAssistantPlaying', {
 
   getScripts: function () {
     return [
-      this.file('core/NPOS_DomBuilder.js'),
+      this.file('core/DomBuilder.js'),
       'moment.js'
     ];
   },
