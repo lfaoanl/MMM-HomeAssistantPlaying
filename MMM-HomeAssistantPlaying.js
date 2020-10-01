@@ -73,7 +73,7 @@ Module.register('MMM-HomeAssistantPlaying', {
         payload.album == "None" &&
         payload.artist == "None" &&
         payload.songTitle == "None" &&
-        payload.titleLength == "None" &&) {
+        payload.titleLength == "None") {
         return { noSong: true };
     }
 
