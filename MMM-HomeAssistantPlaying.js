@@ -47,6 +47,7 @@ Module.register('MMM-HomeAssistantPlaying', {
   },
 
   socketNotificationReceived: function (notification, payload) {
+    console.log("HASS: Socket notification received `"+notification+"`")
     switch (notification) {
       case 'RETRIEVED_SONG_DATA':
         this.initialized = true;
