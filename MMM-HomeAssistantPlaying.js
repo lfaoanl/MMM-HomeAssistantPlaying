@@ -24,11 +24,15 @@ Module.register('MMM-HomeAssistantPlaying', {
   getDom: function () {
     let domBuilder = new DomBuilder(this.config, this.file(''));
 
-    if (this.initialized) {
-      return domBuilder.getDom(this.context);
-    } else {
-      return domBuilder.getInitDom(this.translate('LOADING'));
+    if (!this.initialized) {
+        domBuilder.getInitDom(this.translate("LOADING"));
     }
+
+    if (this.context == {} || this.context.state == "off") {
+        return document.createElement("div");
+    }
+
+    return domBuilder.getDom(this.context);
   },
 
   getStyles: function () {
