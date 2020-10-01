@@ -8,6 +8,7 @@ module.exports = NodeHelper.create({
   start: function () {
     let self = this
     this.expressApp.post('/MMM-HomeAssistantPlaying', function (req, res) {
+      console.log("HASS: Request POST")
       self.sendSocketNotification("UPDATE_CURRENT_SONG", req.query);
       res.status(200).send(req.query);
     });
@@ -15,6 +16,7 @@ module.exports = NodeHelper.create({
 
 
   socketNotificationReceived: function (notification, payload) {
+    console.log("HASS: Received `UPDATE_CURRENT_SONG` notification")
     switch (notification) {
       case 'UPDATE_CURRENT_SONG':
         this.sendRetrievedNotification(payload);
