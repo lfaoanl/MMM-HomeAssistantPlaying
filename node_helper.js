@@ -8,7 +8,7 @@ module.exports = NodeHelper.create({
   start: function () {
     let self = this
     this.expressApp.post('/MMM-HomeAssistantPlaying', function (req, res) {
-      self.sendSocketNotification("UPDATE_CURRENT_SONG", req);
+//      self.sendSocketNotification("UPDATE_CURRENT_SONG");
       res.status(200).send(req.body.string());
     });
   },
