@@ -14,15 +14,5 @@ rest_command:
   mm_send_media:
     url: 'http://192.168.1.51:8080/MMM-HomeAssistantPlaying'
     method: post
-    content_type: application/json
-    payload: '{
-    "entity_picture": "{{ state_attr("media_player.faan_slaapkamer", "entity_picture") }}",
-    "media_title": "{{ state_attr("media_player.faan_slaapkamer", "media_title") }}",
-    "media_artist": "{{ state_attr("media_player.faan_slaapkamer", "media_artist") }}",
-    "media_album_name": "{{ state_attr("media_player.faan_slaapkamer", "media_album_name") }}",
-    "duration": "{{ state_attr("media_player.faan_slaapkamer", "duration") }}",
-    "position": "{{ state_attr("media_player.faan_slaapkamer", "position") }}",
-    "state": "{{ state_attr("media_player.faan_slaapkamer", "state") }}",
-    "friendly_name": "{{ state_attr("media_player.faan_slaapkamer", "friendly_name") }}",
-    "app_name": "{{ state_attr("media_player.faan_slaapkamer", "app_name") }}" }'
+    payload: 'entity_picture={{ state_attr("media_player.faan_slaapkamer", "entity_picture") }}&media_title={{ state_attr("media_player.faan_slaapkamer", "media_title") }}&media_artist={{ state_attr("media_player.faan_slaapkamer", "media_artist") }}&media_album_name={{ state_attr("media_player.faan_slaapkamer", "media_album_name") }}&duration={{ state_attr("media_player.faan_slaapkamer", "duration") }}&position={{ state_attr("media_player.faan_slaapkamer", "position") }}&state={{ state_attr("media_player.faan_slaapkamer", "state") }}&friendly_name={{ state_attr("media_player.faan_slaapkamer", "friendly_name") }}&app_name={{ state_attr("media_player.faan_slaapkamer& "app_name") }}'
 
