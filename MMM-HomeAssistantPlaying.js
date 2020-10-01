@@ -24,15 +24,10 @@ Module.register('MMM-HomeAssistantPlaying', {
   getDom: function () {
     let domBuilder = new DomBuilder(this.config, this.file(''));
 
-    if (!this.initialized) {
-        domBuilder.getInitDom(this.translate("LOADING"));
+    if (this.initialized) {
+      return domBuilder.getDom(this.context);
     }
-
-    if (this.context == {} || this.context.state == "off") {
-        return document.createElement("div");
-    }
-
-    return domBuilder.getDom(this.context);
+    return domBuilder.getInitDom(this.translate("LOADING"));
   },
 
   getStyles: function () {
@@ -68,10 +63,20 @@ Module.register('MMM-HomeAssistantPlaying', {
       album:        song.media_album_name,
       titleLength:  parseFloat(song.duration) * 1000,
       progress:     parseFloat(song.position) * 1000,
+      state:        song.state,
       isPlaying:    song.state == "playing",
       deviceName:   song.friendly_name,
       isSpotify:    song.app_name == "Spotify"
     };
+
+    if (payload.imageUrl == "None" &&
+        payload.album == "None" &&
+        payload.artist == "None" &&
+        payload.songTitle == "None" &&
+        payload.titleLength == "None" &&) {
+        return { noSong: true };
+    }
+
     return payload
   },
 //

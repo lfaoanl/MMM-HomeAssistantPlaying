@@ -1,3 +1,6 @@
+.small {
+    max-width: 250px;
+}
 
 .NPOS_initContent {
   background-image: url("../img/background_icon.png");
