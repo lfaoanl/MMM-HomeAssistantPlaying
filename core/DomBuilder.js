@@ -6,7 +6,7 @@ class DomBuilder {
     }
 
     getDom(context) {
-        if (context.noSong || context == {} || context.state == "off") {
+        if (context.noSong || context === {} || context.state === "off") {
             return this.getWrapper(this.getNothingIsPlayingContent());
         } else {
             return this.getWrapper(this.getPlayingContent(context));
