@@ -2,103 +2,109 @@
 
 Module.register('MMM-HomeAssistantPlaying', {
 
-  // default values
-  defaults: {
-    // Module misc
-    name: 'MMM-HomeAssistantPlaying',
-    hidden: false,
+    // default values
+    defaults: {
+        // Module misc
+        name: 'MMM-HomeAssistantPlaying',
+        hidden: false,
 
-    // user definable
-    showCoverArt: true       // Do you want the cover art to be displayed?
-  },
+        // user definable
+        showCoverArt: true       // Do you want the cover art to be displayed?
+    },
 
 
-  start: function () {
-    Log.info('Starting module: ' + this.name );
+    start: function () {
+        Log.info('Starting module: ' + this.name);
 
-    this.sendSocketNotification("CONNECT");
-    this.initialized = false;
-    this.context = {};
-    this.timer = {};
-    this.domBuilder = null;
-  },
+        this.sendSocketNotification("CONNECT");
+        this.initialized = false;
+        this.context = {};
+        this.timer = {};
+        this.domBuilder = null;
+    },
 
-  getDom: function () {
-    this.domBuilder = new DomBuilder(this.config, this.file(''));
+    getDom: function () {
+        this.domBuilder = new DomBuilder(this.config, this.file(''));
 
-    if (this.initialized) {
-      return this.domBuilder.getDom(this.context);
-    }
-    return this.domBuilder.getInitDom(this.translate("LOADING"));
-  },
+        if (this.initialized) {
+            return this.domBuilder.getDom(this.context);
+        }
+        return this.domBuilder.getInitDom(this.translate("LOADING"));
+    },
 
-  getStyles: function () {
-    return [
-      this.file('css/styles.css'),
-      this.file('node_modules/moment-duration-format/lib/moment-duration-format.js'),
-      'font-awesome.css'
-    ];
-  },
+    getStyles: function () {
+        return [
+            this.file('css/styles.css'),
+            this.file('node_modules/moment-duration-format/lib/moment-duration-format.js'),
+            'font-awesome.css'
+        ];
+    },
 
-  getScripts: function () {
-    return [
-      this.file('core/DomBuilder.js'),
-      'moment.js'
-    ];
-  },
+    getScripts: function () {
+        return [
+            this.file('core/DomBuilder.js'),
+            'moment.js'
+        ];
+    },
 
-  socketNotificationReceived: function (notification, payload) {
-    console.log("HASS: Socket notification received `"+notification+"`")
-    switch (notification) {
-      case 'UPDATE_CURRENT_SONG':
-        this.initialized = true;
-        this.context = this.parseSongData(payload);
-        this.updateDom();
-        this.updateTimer(this.context);
-    }
-  },
+    socketNotificationReceived: function (notification, payload) {
+        console.log("HASS: Socket notification received `" + notification + "`")
+        switch (notification) {
+            case 'UPDATE_CURRENT_SONG':
+                this.initialized = true;
+                this.context = this.parseSongData(payload);
+                this.updateDom();
+                this.updateTimer(this.context);
+        }
+    },
 
-  parseSongData: function (song) {
-    let payload = {
-      imgURL:       song.entity_picture,
-      songTitle:    song.media_title,
-      artist:       song.media_artist,
-      album:        song.media_album_name,
-      titleLength:  Math.round(parseFloat(song.duration)) * 1000,
-      progress:     Math.round(parseFloat(song.position)) * 1000,
-      state:        song.state,
-      isPlaying:    song.state == "playing",
-      deviceName:   song.friendly_name,
-      isSpotify:    song.app_name == "Spotify"
-    };
+    parseSongData: function (song) {
+        let payload = {
+            imgURL: song.entity_picture,
+            songTitle: song.media_title,
+            artist: song.media_artist,
+            album: song.media_album_name,
+            titleLength: Math.round(parseFloat(song.duration)) * 1000,
+            progress: Math.round(parseFloat(song.position)) * 1000,
+            state: song.state,
+            isPlaying: song.state == "playing",
+            deviceName: song.friendly_name,
+            isSpotify: song.app_name == "Spotify"
+        };
 
-    if (payload.imageUrl == "None" &&
-        payload.album == "None" &&
-        payload.artist == "None" &&
-        payload.songTitle == "None" &&
-        payload.titleLength == "None") {
-        return { noSong: true };
-    }
+        if (payload.imageUrl == "None" &&
+            payload.album == "None" &&
+            payload.artist == "None" &&
+            payload.songTitle == "None" &&
+            payload.titleLength == "None") {
+            return {noSong: true};
+        }
 
-    return payload
-  },
+        return payload
+    },
 
-  updateTimer: function (context) {
-    if (context.state !== "playing" && this.timer.interval !== null) {
-      console.log(this.timer);
-      clearInterval(this.timer.interval);
-      this.timer.interval = null;
-    }
+    updateTimer: function (context) {
+        if (context.state !== "playing" && this.timer.interval !== null) {
+            clearInterval(this.timer.interval);
+            this.timer.interval = null;
+        }
 
-    if (context.state === "playing" && this.timer.interval === null) {
-      this.timer.progress = context.progress;
-      let self = this;
-      this.timer.interval = setInterval(function () {
-        self.domBuilder.updateTimer(self.timer.progress, context.titleLength);
-        self.timer.progress += 1000;
-      }, 1000);
-    }
-  },
+        if (context.state === "playing") {
+            if (this.timer.interval !== null) {
+                clearInterval(this.timer.interval);
+                this.timer.interval = null;
+            }
+
+            if (this.timer.interval === null) {
+                this.timer.progress = context.progress;
+                let self = this;
+                this.timer.interval = setInterval(function () {
+                    self.domBuilder.updateTimer(self.timer.progress, context.titleLength);
+                    self.timer.progress += 1000;
+                }, 1000);
+            }
+        }
+    },
 //
 //  startFetchingLoop() {
 //    // start immediately ...
