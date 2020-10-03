@@ -85,7 +85,7 @@ Module.register('MMM-HomeAssistantPlaying', {
 
   updateTimer: function (context) {
     if (context.state !== "playing" && this.timer.interval !== null) {
-        console.log(this.timer);
+      console.log(this.timer);
       clearInterval(this.timer.interval);
       this.timer.interval = null;
     }
@@ -95,7 +95,7 @@ Module.register('MMM-HomeAssistantPlaying', {
       let self = this;
       this.timer.interval = setInterval(function () {
         self.domBuilder.updateTimer(self.timer.progress, context.titleLength);
-        self.timer.progress += 1;
+        self.timer.progress += 1000;
       }, 1000);
     }
   },
