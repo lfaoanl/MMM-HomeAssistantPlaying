@@ -102,7 +102,7 @@ class DomBuilder {
 
   getProgressBar(context) {
     console.log(context)
-    progressBar = document.createElement('progress');
+    let progressBar = document.createElement('progress');
     progressBar.className = 'NPOS_progress';
 
     progressBar.value = context.progress;
