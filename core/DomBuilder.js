@@ -93,7 +93,7 @@ class DomBuilder {
     content.appendChild(this.getInfoDiv('fa fa-music', context.songTitle));
     content.appendChild(this.getInfoDiv('fa fa-user', context.artist));
     content.appendChild(this.getInfoDiv('fa fa-folder', context.album));
-    content.appendChild(this.getInfoDiv(this.getPlayStatusIcon(context.isPlaying), this.getTimeInfo(context)));
+    content.appendChild(this.getInfoDiv(this.getPlayStatusIcon(context.isPlaying), this.getTimeInfo(context), "HAPlaying-timer"));
     content.appendChild(this.getProgressBar(context));
     content.appendChild(this.getInfoDiv('', context.deviceName));
 
@@ -102,8 +102,9 @@ class DomBuilder {
 
   getProgressBar(context) {
     console.log(context)
-    let progressBar = document.createElement('progress');
+    progressBar = document.createElement('progress');
     progressBar.className = 'NPOS_progress';
+
     progressBar.value = context.progress;
     progressBar.max = context.titleLength;
 
@@ -117,7 +118,7 @@ class DomBuilder {
     return currentPos.format() + ' / ' + length.format();
   }
 
-  getInfoDiv(symbol, text) {
+  getInfoDiv(symbol, text, idName) {
     let infoDiv = document.createElement('div');
     infoDiv.className = 'NPOS_infoText';
 
@@ -127,7 +128,10 @@ class DomBuilder {
       infoDiv.appendChild(icon);
     }
 
-    infoDiv.appendChild(document.createTextNode(text));
+    let span = document.createElement("span");
+    span.innerText = text;
+
+    infoDiv.appendChild(span);
 
     return infoDiv;
   }
