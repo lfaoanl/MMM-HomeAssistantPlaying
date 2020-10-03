@@ -122,7 +122,7 @@ class DomBuilder {
     let text = document.querySelector("#" + this.getId("timer") + " span");
     text.innerText = this.getTimeInfo({ progress, titleLength });
 
-    this.progressBar.value = progress;
+    document.querySelector(".NPOS_progress").value = progress;
   }
 
   getInfoDiv(symbol, text, id) {
