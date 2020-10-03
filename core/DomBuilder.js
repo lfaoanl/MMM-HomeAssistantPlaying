@@ -118,7 +118,7 @@ class DomBuilder {
     return currentPos.format() + ' / ' + length.format();
   }
 
-  updateTime(progress, titleLength) {
+  updateTimer(progress, titleLength) {
     let text = document.querySelector("#" + this.getId("timer") + " span");
     text.innerText = this.getTimeInfo({ progress, titleLength });
   }
