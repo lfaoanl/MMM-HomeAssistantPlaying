@@ -85,6 +85,7 @@ Module.register('MMM-HomeAssistantPlaying', {
 
   updateTimer: function (context) {
     if (context.state !== "playing" && this.timer.interval !== null) {
+        console.log(this.timer);
       clearInterval(this.timer.interval);
       this.timer.interval = null;
     }
