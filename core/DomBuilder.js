@@ -102,11 +102,11 @@ class DomBuilder {
 
   getProgressBar(context) {
     console.log(context)
-    let progressBar = document.createElement('progress');
-    progressBar.className = 'NPOS_progress';
+    this.progressBar = document.createElement('progress');
+    this.progressBar.className = 'NPOS_progress';
 
-    progressBar.value = context.progress;
-    progressBar.max = context.titleLength;
+    this.progressBar.value = context.progress;
+    this.progressBar.max = context.titleLength;
 
     return progressBar;
   }
@@ -121,6 +121,8 @@ class DomBuilder {
   updateTimer(progress, titleLength) {
     let text = document.querySelector("#" + this.getId("timer") + " span");
     text.innerText = this.getTimeInfo({ progress, titleLength });
+
+    this.progressBar.value = progress;
   }
 
   getInfoDiv(symbol, text, id) {
