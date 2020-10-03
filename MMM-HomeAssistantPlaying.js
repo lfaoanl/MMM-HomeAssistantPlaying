@@ -27,10 +27,9 @@ Module.register('MMM-HomeAssistantPlaying', {
     this.domBuilder = new DomBuilder(this.config, this.file(''));
 
     if (this.initialized) {
-      this.domBuilder.getDom(this.context);
+      return this.domBuilder.getDom(this.context);
     }
-    this.domBuilder.getInitDom(this.translate("LOADING"));
-    return this.domBuilder;
+    return this.domBuilder.getInitDom(this.translate("LOADING"));
   },
 
   getStyles: function () {
