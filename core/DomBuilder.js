@@ -108,7 +108,7 @@ class DomBuilder {
     this.progressBar.value = context.progress;
     this.progressBar.max = context.titleLength;
 
-    return progressBar;
+    return this.progressBar;
   }
 
   getTimeInfo(context) {
@@ -122,7 +122,7 @@ class DomBuilder {
     let text = document.querySelector("#" + this.getId("timer") + " span");
     text.innerText = this.getTimeInfo({ progress, titleLength });
 
-    document.querySelector(".NPOS_progress").value = progress;
+    this.progressBar.value = progress;
   }
 
   getInfoDiv(symbol, text, id) {
