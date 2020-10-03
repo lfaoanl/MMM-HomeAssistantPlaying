@@ -115,7 +115,12 @@ class DomBuilder {
     let currentPos = moment.duration(context.progress);
     let length = moment.duration(context.titleLength);
 
-    return currentPos.format() + ' / ' + length.format();
+    let progressFormat = currentPos.format();
+
+    if (context.progress === 0) {
+        progressFormat = "0:00";
+    }
+    return progressFormat + ' / ' + length.format();
   }
 
   updateTimer(progress, titleLength) {
