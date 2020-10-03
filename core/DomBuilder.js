@@ -20,7 +20,7 @@ class DomBuilder {
 
   getWrapper(content) {
     let wrapper = document.createElement('div');
-    wrapper.className = 'small';
+    wrapper.className = 'small, HAPlaying-container';
     wrapper.appendChild(content);
 
     return wrapper;
