@@ -29,7 +29,7 @@ Module.register('MMM-HomeAssistantPlaying', {
         if (this.initialized) {
             return this.domBuilder.getDom(this.context);
         }
-        return this.domBuilder.getInitDom(this.translate("LOADING"));
+        return document.createElement("div")
     },
 
     getStyles: function () {
