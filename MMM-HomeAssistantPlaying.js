@@ -85,15 +85,18 @@ Module.register('MMM-HomeAssistantPlaying', {
   },
 
   updateTimer: function (context) {
-    this.timer.progress = context.progress;
-    if (context.state !== "playing") {
-        clearInterval(this.timer.interval);
-        return;
+    if (context.state !== "playing" && this.timer.interval !== null) {
+      clearInterval(this.timer.interval);
+      this.timer.interval = null;
     }
-    this.timer.interval = setInterval(function () {
+
+    if (context.state === "playing" && this.timer.interval === null) {
+      this.timer.progress = context.progress;
+      this.timer.interval = setInterval(function () {
         this.domBuilder.updateTimer(this.timer.progress, context.titleLength);
         this.timer.progress += 1;
-    }, 1000);
+      }, 1000);
+    }
   },
 //
 //  startFetchingLoop() {
