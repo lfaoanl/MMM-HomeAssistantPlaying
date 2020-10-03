@@ -94,15 +94,12 @@ Module.register('MMM-HomeAssistantPlaying', {
                 clearInterval(this.timer.interval);
                 this.timer.interval = null;
             }
-
-            if (this.timer.interval === null) {
-                this.timer.progress = context.progress;
-                let self = this;
-                this.timer.interval = setInterval(function () {
-                    self.domBuilder.updateTimer(self.timer.progress, context.titleLength);
-                    self.timer.progress += 1000;
-                }, 1000);
-            }
+            this.timer.progress = context.progress;
+            let self = this;
+            this.timer.interval = setInterval(function () {
+                self.domBuilder.updateTimer(self.timer.progress, context.titleLength);
+                self.timer.progress += 1000;
+            }, 1000);
         }
     },
 //
