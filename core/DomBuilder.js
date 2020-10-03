@@ -93,7 +93,7 @@ class DomBuilder {
     content.appendChild(this.getInfoDiv('fa fa-music', context.songTitle));
     content.appendChild(this.getInfoDiv('fa fa-user', context.artist));
     content.appendChild(this.getInfoDiv('fa fa-folder', context.album));
-    content.appendChild(this.getInfoDiv(this.getPlayStatusIcon(context.isPlaying), this.getTimeInfo(context), "HAPlaying-timer"));
+    content.appendChild(this.getInfoDiv(this.getPlayStatusIcon(context.isPlaying), this.getTimeInfo(context), "timer"));
     content.appendChild(this.getProgressBar(context));
     content.appendChild(this.getInfoDiv('', context.deviceName));
 
@@ -118,9 +118,18 @@ class DomBuilder {
     return currentPos.format() + ' / ' + length.format();
   }
 
-  getInfoDiv(symbol, text, idName) {
+  updateTime(progress, titleLength) {
+    let text = document.querySelector("#" + this.getId("timer") + " span");
+    text.innerText = this.getTimeInfo({ progress, titleLength });
+  }
+
+  getInfoDiv(symbol, text, id) {
     let infoDiv = document.createElement('div');
     infoDiv.className = 'NPOS_infoText';
+
+    if (typeof id !== "undefined") {
+        infoDiv.id = this.getId(id);
+    }
 
     if (symbol) {
       let icon = document.createElement('i');
@@ -151,5 +160,9 @@ class DomBuilder {
 
   getPlayStatusIcon(isPlaying) {
     return isPlaying ? 'fa fa-play' : 'fa fa-pause';
+  }
+
+  getId(content) {
+    return "HAPlaying-" + content;
   }
 }

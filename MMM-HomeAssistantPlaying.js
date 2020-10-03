@@ -19,15 +19,18 @@ Module.register('MMM-HomeAssistantPlaying', {
     this.sendSocketNotification("CONNECT");
     this.initialized = false;
     this.context = {};
+    this.timer = {};
+    this.domBuilder = null;
   },
 
   getDom: function () {
-    let domBuilder = new DomBuilder(this.config, this.file(''));
+    this.domBuilder = new DomBuilder(this.config, this.file(''));
 
     if (this.initialized) {
-      return domBuilder.getDom(this.context);
+      this.domBuilder.getDom(this.context);
     }
-    return domBuilder.getInitDom(this.translate("LOADING"));
+    this.domBuilder.getInitDom(this.translate("LOADING"));
+    return this.domBuilder;
   },
 
   getStyles: function () {
@@ -52,6 +55,7 @@ Module.register('MMM-HomeAssistantPlaying', {
         this.initialized = true;
         this.context = this.parseSongData(payload);
         this.updateDom();
+        this.updateTimer(this.context);
     }
   },
 
@@ -78,6 +82,18 @@ Module.register('MMM-HomeAssistantPlaying', {
     }
 
     return payload
+  },
+
+  updateTimer: function (context) {
+    this.timer.progress = context.progress;
+    if (context.state !== "playing") {
+        clearInterval(this.timer.interval);
+        return;
+    }
+    this.timer.interval = setInterval(function () {
+        this.domBuilder.updateTimer(this.timer.progress, context.titleLength);
+        this.timer.progress += 1;
+    }, 1000);
   },
 //
 //  startFetchingLoop() {
